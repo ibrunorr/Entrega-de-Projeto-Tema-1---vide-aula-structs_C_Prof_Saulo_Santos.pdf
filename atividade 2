@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX_PRODUTOS 100
+
+typedef struct {
+    char nome[30];
+    float preco;
+    int quantidade;
+} Produto;
+
+void cadastroProduto(Produto *produto) {
+    printf("Digite o nome do produto: ");
+    getchar(); 
+    fgets(produto->nome, sizeof(produto->nome), stdin);
+    
+    printf("Digite o preço do produto: ");
+    scanf("%f", &produto->preco);
+    
+    printf("Digite a quantidade do produto: ");
+    scanf("%d", &produto->quantidade);
+}
+
+void listaProdutos(Produto produtos[], int total) {
+    if (total == 0) {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < total; i++) {
+        printf("\nProduto %d:\n", i + 1);
+        printf("\tNome: %s\n", produtos[i].nome);
+        printf("\tPreço: %.2f\n", produtos[i].preco);
+        printf("\tQuantidade: %d\n", produtos[i].quantidade);
+    }
+}
+
+void NovosPreco(Produto produtos[], int total) {
+    int indice;
+    float novoPreco;
+
+    if (total == 0) {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    printf("Escolha o numero do produto para atualizar o preço (1 a %d): ", total);
+    scanf("%d", &indice);
+
+    if (indice < 1 || indice > total) {
+        printf("Produto nao encontrado.\n");
+        return;
+    }
+
+    printf("Digite o novo preço '%s': ", produtos[indice - 1].nome);
+    scanf("%f", &novoPreco);
+    produtos[indice - 1].preco = novoPreco;
+    printf("Preço atualizado.\n");
+}
+
+int main() {
+    int opcao;
+    Produto produtos[MAX_PRODUTOS];
+    int totalProdutos = 0;
+
+    do {
+        printf("\n1-Cadastrar um produto\n");
+        printf("2-Listar produtos\n");
+        printf("3-Modificar o preço de um produto\n");
+        printf("4-Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                if (totalProdutos < MAX_PRODUTOS) {
+                    cadastroProduto(&produtos[totalProdutos]);
+                    totalProdutos++;
+                } else {
+                    printf("Limite de produtos atingido!\n");
+                }
+                break;
+            case 2:
+                listaProdutos(produtos, totalProdutos);
+                break;
+            case 3:
+                NovosPreco(produtos, totalProdutos);
+                break;
+            case 4:
+                printf("Saindo do programa...\n");
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+        }
+    } while (opcao != 4);
+
+    return 0;
+}
