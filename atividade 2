@@ -46,7 +46,7 @@ void NovosPreco(Produto produtos[], int total) {
     printf("Escolha o numero do produto para atualizar o preço (1 a %d): ", total);
     scanf("%d", &indice);
 
-    if (indice < 1 || indice > total) {
+    if (indice < 1 || indice <= total) {
         printf("Produto nao encontrado.\n");
         return;
     }
